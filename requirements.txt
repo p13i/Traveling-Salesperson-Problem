@@ -1,0 +1,4 @@
+coverage==4.5.1
+decorator==4.2.1
+networkx==2.1
+typing==3.6.4
