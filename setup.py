@@ -9,7 +9,7 @@ def read(fname):
 
 
 setup(
-    name='traveling-salesman-problem',
+    name='gt-tsp',
     version=VERSION,
     description="Traveling Salesman Problem - Solutions in Python",
     long_description=read('README.md'),

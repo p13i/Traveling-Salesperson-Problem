@@ -5,7 +5,7 @@ https://api.travis-ci.org/p13i/Traveling-Salesman-Problem.svg?branch=master
 ## Installation
 
 ```
-pip install git+https://github.com/p13i/Traveling-Salesman-Problem.git
+pip install gt-tsp
 ```
 
 ## Contributing
@@ -17,4 +17,11 @@ virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python -m unittest discover -s tests
+```
+
+## Publishing
+
+```
+python setup.py sdist
+python setup.py sdist upload
 ```
