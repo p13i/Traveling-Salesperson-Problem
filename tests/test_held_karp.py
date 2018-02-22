@@ -1,28 +1,30 @@
 import unittest
-
+import numpy as np
 import networkx as nx
 from tsp import held_karp
-import numpy as np
-from utils import get_from_tsplib
 
 
 class TSPNaiveTestCase(unittest.TestCase):
     def test_tushar_roy(self):
+        """
+        Based on graph from: https://www.youtube.com/watch?v=-JjA4BLQyqE
+        """
+
         A = np.matrix([
-            [0, 1, 15, 6],
-            [2, 0, 7, 3],
-            [9, 6, 0, 12],
-            [10, 4, 8, 0]
+            [ 0,  1, 15,  6],
+            [ 2,  0,  7,  3],
+            [ 9,  6,  0, 12],
+            [10,  4,  8,  0],
         ])
 
         G = nx.from_numpy_matrix(A, create_using=nx.MultiDiGraph())
 
-        optimal_tour, optimal_cost = held_karp.solver(G, source=0)
+        optimal_tour, optimal_cost = held_karp.solver(G, 0)
 
-        self.assertEqual(optimal_tour, (0, 1, 3, 2, 0))
-        self.assertEqual(optimal_cost, 21)
+        self.assertEqual((0, 1, 3, 2, 0), optimal_tour)
+        self.assertEqual(21, optimal_cost)
 
-    def test_lut_modified(self):
+    def test_2(self):
         A = np.matrix([
             [0, 2, 1, 6, 1],
             [1, 0, 4, 4, 2],
@@ -33,15 +35,7 @@ class TSPNaiveTestCase(unittest.TestCase):
 
         G = nx.from_numpy_matrix(A, create_using=nx.MultiDiGraph())
 
-        optimal_tour, optimal_cost = held_karp.solver(G, source=0)
+        optimal_tour, optimal_cost = held_karp.solver(G, 0)
 
-        self.assertEqual(optimal_tour, (0, 2, 3, 4, 1, 0))
-        self.assertEqual(optimal_cost, 10)
-
-    def test_att48(self):
-        G = get_from_tsplib('./att48.xml')
-        G = G.subgraph(range(0, 10))
-
-        optimal_tour, optimal_cost = held_karp.solver(G, source=0)
-
-        a = 42
+        self.assertEqual((0, 2, 3, 4, 1, 0), optimal_tour)
+        self.assertEqual(10, optimal_cost)

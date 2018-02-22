@@ -3,6 +3,7 @@ import networkx as nx
 import itertools
 from tsp import INFINITY
 import copy
+import utils
 
 
 def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.List[typing.Any], int]
@@ -13,12 +14,17 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
     :return: A list of nodes to visit, forming a TSP tour, and the cost of that tour.
     """
 
+    utils.check_arguments(G, source)
+
     n = G.number_of_nodes()
+
+    if G.number_of_edges() != (n * (n - 1)):
+        raise ValueError("`graph` is not fully connected.")
 
     if source not in G:
         raise ValueError("`source` is not in `graph`")
 
-    distance = get_adjacency_dicts(G)
+    distance = utils.get_adjacency_dicts(G)
 
     min_cost_dp = {}  # type: typing.Dict[Index, int]
     parent = {}  # type: typing.Dict[Index, typing.Any]
@@ -42,13 +48,13 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
             set_copy = set(copy.deepcopy(_set))
 
             for prev_vertex in _set:
-                cost = distance[prev_vertex][current_vertex]['weight'] + _get_cost(set_copy, prev_vertex, min_cost_dp)
+                cost = distance[prev_vertex][current_vertex] + _get_cost(set_copy, prev_vertex, min_cost_dp)
                 if cost < min_cost:
                     min_cost = cost
                     min_prev_vertex = prev_vertex
 
             if len(_set) == 0:
-                min_cost = distance[source][current_vertex]['weight']
+                min_cost = distance[source][current_vertex]
 
             min_cost_dp[index] = min_cost
             parent[index] = min_prev_vertex
@@ -59,7 +65,7 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
     set_copy = copy.deepcopy(_set)
 
     for vertex in _set:
-        cost = distance[vertex][source]['weight'] + _get_cost(set_copy, vertex, min_cost_dp)
+        cost = distance[vertex][source] + _get_cost(set_copy, vertex, min_cost_dp)
         if cost < min:
             min = cost
             prev_vertex = vertex
@@ -70,21 +76,6 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
 
     return tour, min
 
-
-def get_adjacency_dicts(G):
-    dicts = nx.to_dict_of_dicts(G)
-
-    if isinstance(G, nx.MultiDiGraph):
-
-        for n1 in dicts:
-            for n2 in dicts[n1]:
-                if len(dicts[n1][n2]) != 1 \
-                        or 0 not in dicts[n1][n2]:
-                    raise ValueError()
-
-                dicts[n1][n2] = dicts[n1][n2][0]
-
-    return dicts
 
 def _get_tour(source, parent, nodes):
     _set = set(nodes)

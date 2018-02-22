@@ -1,38 +1,41 @@
 import unittest
-
+import numpy as np
 import networkx as nx
 from tsp import naive
 
 
-class TSPNaiveTestCase(unittest.TestCase):
-    def test_graph_not_fully_connected(self):
-        G = nx.Graph()
+class TSPHeldKarpTestCase(unittest.TestCase):
+    def test_tushar_roy(self):
+        """
+        Based on graph from: https://www.youtube.com/watch?v=-JjA4BLQyqE
+        """
 
-        G.add_nodes_from([1, 2, 3])
-        # Edge (3, 1) is missing
-        G.add_edges_from([(1, 2), (2, 3)])
+        A = np.matrix([
+            [ 0,  1, 15,  6],
+            [ 2,  0,  7,  3],
+            [ 9,  6,  0, 12],
+            [10,  4,  8,  0],
+        ])
 
-        with self.assertRaises(ValueError):
-            naive.solver(G, 1)
+        G = nx.from_numpy_matrix(A, create_using=nx.MultiDiGraph())
 
-    def test_source_not_in_graph(self):
-        G = nx.Graph()
+        optimal_tour, optimal_cost = naive.solver(G, 0)
 
-        with self.assertRaises(ValueError):
-            naive.solver(G, 1)
+        self.assertEqual((0, 1, 3, 2, 0), optimal_tour)
+        self.assertEqual(21, optimal_cost)
 
-    def test_small_graph(self):
-        G = nx.Graph()
+    def test_2(self):
+        A = np.matrix([
+            [0, 2, 1, 6, 1],
+            [1, 0, 4, 4, 2],
+            [5, 3, 0, 1, 5],
+            [4, 7, 2, 0, 1],
+            [3, 6, 3, 6, 0],
+        ])
 
-        G.add_nodes_from([1, 2, 3, 4])
-        G.add_edge(1, 2, cost=6)
-        G.add_edge(2, 3, cost=5)
-        G.add_edge(3, 4, cost=4)
-        G.add_edge(4, 1, cost=3)
-        G.add_edge(1, 3, cost=2)
-        G.add_edge(2, 4, cost=1)
+        G = nx.from_numpy_matrix(A, create_using=nx.MultiDiGraph())
 
-        optimal_path, optimal_cost = naive.solver(G, 1)
+        optimal_tour, optimal_cost = naive.solver(G, 0)
 
-        self.assertEqual(optimal_path, (1, 3, 4, 2))
-        self.assertEqual(optimal_cost, 7)
+        self.assertEqual((0, 2, 3, 4, 1, 0), optimal_tour)
+        self.assertEqual(10, optimal_cost)

@@ -2,6 +2,7 @@ import typing
 import networkx as nx
 import itertools
 from tsp import INFINITY
+import utils
 
 
 def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.List[typing.Any], int]
@@ -12,30 +13,27 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
     :return: A list of nodes to visit, forming a TSP tour, and the cost of that tour.
     """
 
+    utils.check_arguments(G, source)
+
     n = G.number_of_nodes()
-
-    if G.number_of_edges() != (n * (n - 1) // 2):
-        raise ValueError("`graph` is not fully connected.")
-
-    if source not in G:
-        raise ValueError("`source` is not in `graph`")
 
     best_node_permutation = None
     best_cost = INFINITY
+
+    distance = utils.get_adjacency_dicts(G)
 
     for node_permutation in itertools.permutations(G.nodes):
         if node_permutation[0] is not source:
             continue
 
         cost_of_node_permutation = 0
-        for i in range(0, n - 1):
+        for i in range(0, n):
             current_node = node_permutation[i]
-            next_node = node_permutation[i + 1]
-            edge = G.get_edge_data(current_node, next_node)
-            cost_of_node_permutation += edge['cost']
+            next_node = node_permutation[(i + 1) % n]
+            cost_of_node_permutation += distance[current_node][next_node]
 
         if cost_of_node_permutation < best_cost:
-            best_node_permutation = node_permutation
+            best_node_permutation = tuple(node_permutation + (source,))
             best_cost = cost_of_node_permutation
 
     return best_node_permutation, best_cost
