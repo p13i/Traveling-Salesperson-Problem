@@ -23,7 +23,7 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
     distance = utils.get_adjacency_dicts(G)
 
     for node_permutation in itertools.permutations(G.nodes):
-        if node_permutation[0] is not source:
+        if node_permutation[0] != source:
             continue
 
         cost_of_node_permutation = 0

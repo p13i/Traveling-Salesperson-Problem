@@ -18,12 +18,6 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
 
     n = G.number_of_nodes()
 
-    if G.number_of_edges() != (n * (n - 1)):
-        raise ValueError("`graph` is not fully connected.")
-
-    if source not in G:
-        raise ValueError("`source` is not in `graph`")
-
     distance = utils.get_adjacency_dicts(G)
 
     min_cost_dp = {}  # type: typing.Dict[Index, int]
@@ -119,7 +113,7 @@ class Index(object):
             and other.vertex_set == self.vertex_set
 
     def __hash__(self):
-        return 31 * self.vertex + hash(self.vertex_set)
+        return 31 * hash(self.vertex) + hash(self.vertex_set)
 
     def __str__(self):
         return "%s - {%s}" % (self.vertex, self.vertex_set)
