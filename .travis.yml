@@ -1,22 +1,13 @@
 language: python
 
-matrix:
-  include:
-    - python: '2.7'
-      env: SUPPORT_MYPY=false
-
-    - python: '3.4'
-      env: SUPPORT_MYPY=false
-
-    - python: '3.5'
-      env: SUPPORT_MYPY=true
-
-    - python: '3.6'
-      env: SUPPORT_MYPY=true
+python:
+  - '2.7'
+  - '3.4'
+  - '3.5'
+  - '3.6'
 
 cache: pip
 
 install: bash ./bin/install.sh
 
 script: bash ./bin/test.sh
-
