@@ -15,7 +15,7 @@ git clone https://github.com/p13i/Traveling-Salesperson-Problem.git gt-tsp
 cd gt-tsp
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+bash ./bin/install.sh
 ```
 
 ## Testing
@@ -23,9 +23,7 @@ pip install -r requirements.txt
 Care has been taken to develop unit tests and ensure this code follows PEP8 conventions and type checking. Use `flake8` for coding style and type checking. Type checking with `mypy` is only supported in Python 3.5+ so please install that version before continuing.
 
 ```bash
-python -m unittest discover -s .
-flake8 --config=flake8.ini --mypy-config=flake8.ini
-
+bash ./bin/test.sh
 ```
 
 ## Publishing
