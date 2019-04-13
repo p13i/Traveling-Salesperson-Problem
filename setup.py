@@ -13,7 +13,9 @@ setup(
     version=VERSION,
     description="Traveling Salesperson Problem - Solutions in Python",
     long_description=read('README.md'),
-    author='Pramod Kotipalli - School of Interactive Computing - Georgia Institute of Technology',
+    author='Pramod Kotipalli'
+           ' - School of Interactive Computing'
+           ' - Georgia Institute of Technology',
     author_email='pramodk@gatech.edu',
     url='https://github.com/p13i/Traveling-Salesman-Problem',
     packages=find_packages(),

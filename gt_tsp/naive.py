@@ -1,23 +1,24 @@
-import typing
-import networkx as nx
+from typing import Tuple, List, Any, Dict  # noqa: 401
+import networkx as nx  # noqa: 401
 import itertools
 from gt_tsp import INFINITY
 from . import utils
 
 
-def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.List[typing.Any], int]
+def solver(G, source):  # type: (nx.Graph, Any) -> Tuple[Tuple[Any, ...], int]
     """
     Produces the optimal TSP tour using a naive solution - O(n!)
     :param G: A fully connected networkx graph.
     :param source: A source node in G.
-    :return: A list of nodes to visit, forming a TSP tour, and the cost of that tour.
+    :return: A list of nodes to visit, forming a TSP tour, and the cost of
+    that tour.
     """
 
     utils.check_arguments(G, source)
 
     n = G.number_of_nodes()
 
-    best_node_permutation = None
+    best_node_permutation = tuple()  # type: Tuple[Any, ...]
     best_cost = INFINITY
 
     distance = utils.get_adjacency_dicts(G)

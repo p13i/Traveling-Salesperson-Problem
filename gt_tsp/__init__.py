@@ -1,7 +1,7 @@
 import sys
 
-# Use sys.version_info[0] instead of sys.version_info.major so we can run these checks in versions < 2.7
-# Source: https://stackoverflow.com/a/9079062
+# Use sys.version_info[0] instead of sys.version_info.major so we can run these
+# checks in versions < 2.7. Source: https://stackoverflow.com/a/9079062
 _py_major = sys.version_info[0]
 _py_minor = sys.version_info[1]
 
@@ -26,7 +26,9 @@ else:
     _is_py_supported = False
 
 if not _is_py_supported:
-    raise Exception('gt-tsp cannot be used with your Python version: %d.%d' % (_py_major, _py_minor))
+    raise Exception(
+        'gt-tsp cannot be used with your Python version: %d.%d'
+        % (_py_major, _py_minor))
 
 
 INFINITY = _infinity

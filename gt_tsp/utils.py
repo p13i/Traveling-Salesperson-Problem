@@ -23,7 +23,8 @@ def get_adjacency_dicts(G):
             if len(dicts[n1][n2]) != 1 \
                     or 0 not in dicts[n1][n2] \
                     or 'weight' not in dicts[n1][n2][0]:
-                raise ValueError("`G`'s adjacency matrix is not properly formatted.")
+                raise ValueError(
+                    "`G`'s adjacency matrix is not properly formatted.")
 
             dicts[n1][n2] = dicts[n1][n2][0]['weight']
 
