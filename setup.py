@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-VERSION = '0.0.3'
+VERSION = '1.0.0'
 
 
 def read(fname):
@@ -11,7 +11,7 @@ def read(fname):
 setup(
     name='gt-tsp',
     version=VERSION,
-    description="Traveling Salesman Problem - Solutions in Python",
+    description="Traveling Salesperson Problem - Solutions in Python",
     long_description=read('README.md'),
     author='Pramod Kotipalli - School of Interactive Computing - Georgia Institute of Technology',
     author_email='pramodk@gatech.edu',

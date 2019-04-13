@@ -1,8 +1,8 @@
 import typing
 import networkx as nx
 import itertools
-from tsp import INFINITY
-import utils
+from gt_tsp import INFINITY
+from . import utils
 
 
 def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.List[typing.Any], int]

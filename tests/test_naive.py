@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 import networkx as nx
-from tsp import naive
+from gt_tsp import naive
 
 
 class TSPHeldKarpTestCase(unittest.TestCase):
