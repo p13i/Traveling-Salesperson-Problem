@@ -21,6 +21,7 @@ py_version=$(python -c "import sys; print('{0[0]}.{0[1]}'.format(sys.version_inf
 
 # If mypy is supported,
 if [[ $(version_at_least ${py_version} '3.5') == true ]]; then
+    echo 'mypy is supported in this Python version.'
     pip install flake8-mypy==17.3.3 mypy==0.700 mypy-extensions==0.4.1 typed-ast==1.3.1
 else
     echo 'mypy not supported in this Python version. Skipping install.';
