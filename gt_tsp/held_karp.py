@@ -1,27 +1,27 @@
-import typing
-import networkx as nx
+from typing import Tuple, List, Any, Dict  # noqa: 401
+import networkx as nx  # noqa: 401
 import itertools
-from tsp import INFINITY
+from gt_tsp import INFINITY
 import copy
-import utils
+from . import utils
 
 
-def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.List[typing.Any], int]
+def solver(G, source):  # type: (nx.Graph, Any) -> Tuple[Tuple[Any, ...], int]
     """
-    Produces the optimal TSP tour using the Held-Karp, dynamic programming approach - O(n^2 * 2^n)
+    Produces the optimal TSP tour using the Held-Karp, dynamic programming
+    approach - O(n^2 * 2^n)
     :param G: A fully connected networkx MultiDiGraph.
     :param source: A source node in G.
-    :return: A list of nodes to visit, forming a TSP tour, and the cost of that tour.
+    :return: A list of nodes to visit, forming a TSP tour, and the cost of
+    that tour.
     """
 
     utils.check_arguments(G, source)
 
-    n = G.number_of_nodes()
-
     distance = utils.get_adjacency_dicts(G)
 
-    min_cost_dp = {}  # type: typing.Dict[Index, int]
-    parent = {}  # type: typing.Dict[Index, typing.Any]
+    min_cost_dp = {}  # type: Dict[Index, int]
+    parent = {}  # type: Dict[Index, Any]
 
     nodes_except_source = list(G.nodes)
     nodes_except_source.remove(source)
@@ -42,7 +42,9 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
             set_copy = set(copy.deepcopy(_set))
 
             for prev_vertex in _set:
-                cost = distance[prev_vertex][current_vertex] + _get_cost(set_copy, prev_vertex, min_cost_dp)
+                cost = distance[prev_vertex][current_vertex] + \
+                       _get_cost(set_copy, prev_vertex, min_cost_dp)
+
                 if cost < min_cost:
                     min_cost = cost
                     min_prev_vertex = prev_vertex
@@ -54,24 +56,27 @@ def solver(G, source):  # type: (nx.Graph, typing.Any) -> typing.Tuple[typing.Li
             parent[index] = min_prev_vertex
 
     _set = set(nodes_except_source)
-    min = INFINITY
+    min_ = INFINITY
     prev_vertex = None
     set_copy = copy.deepcopy(_set)
 
     for vertex in _set:
-        cost = distance[vertex][source] + _get_cost(set_copy, vertex, min_cost_dp)
-        if cost < min:
-            min = cost
+        cost = distance[vertex][source] + \
+               _get_cost(set_copy, vertex, min_cost_dp)
+        if cost < min_:
+            min_ = cost
             prev_vertex = vertex
 
     parent[Index(source, _set)] = prev_vertex
 
     tour = _get_tour(source, parent, G.nodes)
 
-    return tour, min
+    return tour, min_
 
 
 def _get_tour(source, parent, nodes):
+    # type: (Any, Any, List[Any]) -> Tuple[Any, ...]
+
     _set = set(nodes)
 
     start = source
@@ -89,6 +94,7 @@ def _get_tour(source, parent, nodes):
 
     return tuple(stack[::-1])
 
+
 def _get_cost(set, prev_vertex, min_cost_dp):
     set.remove(prev_vertex)
     index = Index(prev_vertex, set)
@@ -98,12 +104,13 @@ def _get_cost(set, prev_vertex, min_cost_dp):
 
 
 def _power_set(s):
-    return itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s) + 1))
+    return itertools.chain.from_iterable(
+        itertools.combinations(s, r) for r in range(len(s) + 1))
 
 
 class Index(object):
     def __init__(self, vertex, vertex_set):
-        self.vertex = vertex  # type: typing.Any
+        self.vertex = vertex  # type: Any
         self.vertex_set = frozenset(vertex_set)  # type: frozenset
 
     def __eq__(self, other):
